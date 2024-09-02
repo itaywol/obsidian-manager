@@ -68,8 +68,6 @@ server.register(swaggerUi, {
       next();
     },
   },
-  staticCSP: true,
-  transformStaticCSP: (header) => header,
   transformSpecification(swaggerObject, request, reply) {
     return swaggerObject;
   },
@@ -424,9 +422,9 @@ server.register(
 
 const start = async () => {
   try {
-    await server.listen({ host, port });
+    await server.listen({ host: "0.0.0.0", port });
     logger.info(
-      `Swagger documentation is available at http://${host}:${port}/documentation`
+      `Swagger documentation is available at http://localhost:${port}/documentation`
     );
   } catch (err) {
     logger.error(err);
