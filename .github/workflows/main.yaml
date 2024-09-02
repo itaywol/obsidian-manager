@@ -44,9 +44,17 @@ jobs:
             ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest
             ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
 
+      - name: Extract metadata
+        id: metadata
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}
+          tags: |
+            type=raw,va
+
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v1
         with:
           subject-name: ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
-          subject-digest: ${{ github.sha }}
+          subject-digest: ${{ steps.metadata.outputs.digest }}
           push-to-registry: true
