@@ -16,6 +16,8 @@ jobs:
     permissions:
       contents: read
       packages: write
+      id-token: write
+      attestations: write
 
     steps:
       - name: Checkout code
@@ -58,3 +60,4 @@ jobs:
           subject-name: ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
           subject-digest: ${{ steps.metadata.outputs.digest }}
           push-to-registry: true
+          show-summary: true
