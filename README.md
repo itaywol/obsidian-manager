@@ -2,6 +2,8 @@
 
 Obsidian Manager API is a service that provides file management operations for Obsidian vaults through a RESTful API. It allows reading, writing, moving, and deleting files within a specified work folder.
 
+If it is file management api using REST why Obsidian Manager? Because i use it mainly for managing my obsidian vault.
+
 ## Features
 
 - Read file content and extract variables
