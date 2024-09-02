@@ -13,6 +13,9 @@ env:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
 
     steps:
       - name: Checkout code
@@ -40,3 +43,10 @@ jobs:
           tags: |
             ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:latest
             ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.DOCKER_REGISTRY }}/${{ env.GITHUB_USERNAME }}/${{ env.DOCKER_IMAGE }}:${{ github.sha }}
+          subject-digest: ${{ github.sha }}
+          push-to-registry: true
