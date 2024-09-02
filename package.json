@@ -23,7 +23,9 @@
     "@fastify/swagger": "^8.15.0",
     "@fastify/swagger-ui": "^4.1.0",
     "dotenv": "^16.3.1",
-    "fastify": "^4.21.0"
+    "fastify": "^4.21.0",
+    "pino": "^9.3.2",
+    "pino-pretty": "^11.2.2"
   },
-  "description": ""
+  "description": "Obsidian Manager API is a service that provides file management operations for Obsidian vaults through a RESTful API. It allows reading, writing, moving, and deleting files within a specified work folder."
 }

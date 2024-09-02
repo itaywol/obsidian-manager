@@ -4,16 +4,34 @@ import dotenv from "dotenv";
 import fastify, { FastifyInstance } from "fastify";
 import { promises as fs } from "fs";
 import path from "path";
+import pino from "pino";
 
 dotenv.config();
 
-const server: FastifyInstance = fastify();
+// Create a Pino logger instance
+const logger = pino({
+  level: process.env.LOG_LEVEL || "info",
+  transport: {
+    target: "pino-pretty",
+  },
+});
+
+// Create Fastify instance with Pino logger
+const server: FastifyInstance = fastify({
+  logger: {
+    level: process.env.LOG_LEVEL || "info",
+    transport: {
+      target: "pino-pretty",
+    },
+  },
+});
 
 const mainFolderPath = process.env.WORK_FOLDER;
 const port = parseInt(process.env.PORT || "3000", 10);
+const host = process.env.HOST || "0.0.0.0";
 
 if (!mainFolderPath) {
-  console.error("WORK_FOLDER environment variable is not set");
+  logger.error("WORK_FOLDER environment variable is not set");
   process.exit(1);
 }
 
@@ -29,7 +47,7 @@ server.register(swagger, {
     },
     servers: [
       {
-        url: `http://localhost:${port}`,
+        url: `http://${host}:${port}`,
         description: "Development server",
       },
     ],
@@ -406,13 +424,12 @@ server.register(
 
 const start = async () => {
   try {
-    await server.listen({ port });
-    console.log(`Server is running on http://localhost:${port}`);
-    console.log(
-      `Swagger documentation is available at http://localhost:${port}/documentation`
+    await server.listen({ host, port });
+    logger.info(
+      `Swagger documentation is available at http://${host}:${port}/documentation`
     );
   } catch (err) {
-    console.error(err);
+    logger.error(err);
     process.exit(1);
   }
 };

@@ -32,9 +32,10 @@ COPY --from=builder /app/dist ./dist
 
 # Set environment variables
 ENV NODE_ENV=production
+ENV HOST=0.0.0.0
 ENV PORT=3000
 ENV WORK_FOLDER=/app/data
-
+ENV LOG_LEVEL=info
 # Expose the port the app runs on
 EXPOSE 3000
 VOLUME /app/data
