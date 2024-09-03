@@ -45,12 +45,6 @@ server.register(swagger, {
       description: "API for managing Obsidian files",
       version: "1.0.0",
     },
-    servers: [
-      {
-        url: `http://${host}:${port}`,
-        description: "Development server",
-      },
-    ],
   },
 });
 
